@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>智能优化算法 MATLAB 实验汇报（最终版）</title>
+
+  <!-- MathJax -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$']], displayMath: [['$$','$$']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Helvetica Neue","PingFang SC","Microsoft YaHei",sans-serif;
+      background: #ffffff;
+      color: #111827;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      padding: 60px 120px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      transform: translateX(100%);
+      transition: transform 0.6s ease;
+    }
+
+    .slide.active { transform: translateX(0); }
+    .slide.prev { transform: translateX(-100%); }
+
+    h1 { font-size: 50px; margin-bottom: 30px; }
+    h2 { font-size: 36px; margin-bottom: 25px; }
+
+    p, li {
+      font-size: 20px;
+      line-height: 1.6;
+    }
+
+    ul { list-style-position: inside; padding: 0; }
+
+    .formula { font-size: 24px; margin: 15px 0 20px; }
+
+    pre {
+      background: #f3f4f6;
+      padding: 16px 20px;
+      border-radius: 8px;
+      text-align: left;
+      font-size: 16px;
+      max-width: 900px;
+    }
+
+    img {
+      margin-top: 25px;
+      width: 720px;
+      border-radius: 10px;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 25px;
+      right: 40px;
+      font-size: 14px;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 封面 -->
+<section class="slide active">
+  <h1>智能优化算法 MATLAB 实验汇报</h1>
+  <p>遗传算法 · Schaffer 测试函数</p>
+  <div class="footer">1</div>
+</section>
+
+<!-- 研究背景 -->
+<section class="slide">
+  <h2>研究背景</h2>
+  <ul>
+    <li>工程与科学问题中常见非线性、多峰优化问题</li>
+    <li>传统梯度法容易陷入局部最优</li>
+    <li>需要具有全局搜索能力的优化算法</li>
+  </ul>
+  <div class="footer">2</div>
+</section>
+
+<!-- 遗传算法提出 -->
+<section class="slide">
+  <h2>遗传算法的提出</h2>
+  <ul>
+    <li>提出者：John Holland（1975）</li>
+    <li>灵感来源：自然界生物进化与自然选择</li>
+    <li>属于群体智能与进化计算方法</li>
+  </ul>
+  <div class="footer">3</div>
+</section>
+
+<!-- 遗传算法思想 -->
+<section class="slide">
+  <h2>遗传算法的基本思想</h2>
+  <ul>
+    <li>将解编码为“个体”，组成初始种群</li>
+    <li>通过选择、交叉、变异产生新一代</li>
+    <li>适应度高的个体更容易被保留</li>
+  </ul>
+  <div class="footer">4</div>
+</section>
+
+<!-- 问题一 -->
+<section class="slide">
+  <h2>问题一：一维函数最小值（GA）</h2>
+  <ul>
+    <li><b>步骤1：</b>构建目标函数并限定搜索区间</li>
+    <li><b>步骤2：</b>遗传算法进行全局搜索</li>
+    <li><b>步骤3：</b>获得全局最小值点</li>
+  </ul>
+  <div class="formula">$$ f(x)=11\sin(6x)+7\cos(5x),\quad x\in[0,2\pi] $$</div>
+  <pre><code>fun = @(x) 11*sin(6*x)+7*cos(5*x);
+[x,fval] = ga(fun,1,[],[],[],[],0,2*pi);</code></pre>
+  <img src="ga_1D_result.png"
+     style=margin-top: 20px;
+            width: 650px;
+             max-height: 280px;
+  	     object-fit: contain;
+             border-radius: 10px; alt="GA一维结果">
+  <div class="footer">5</div>
+</section>
+
+<!-- Schaffer 介绍 -->
+<section class="slide">
+  <h2>Schaffer 测试函数</h2>
+  <ul>
+    <li>经典多峰测试函数</li>
+    <li>具有大量局部极值</li>
+    <li>用于检验算法全局搜索能力</li>
+  </ul>
+  <div class="footer">6</div>
+</section>
+
+<!-- Schaffer 数学形式 -->
+<section class="slide">
+  <h2>Schaffer 函数数学模型</h2>
+  <div class="formula">
+  $$ f(x,y)=0.5-\frac{\sin^2(\sqrt{x^2+y^2})-0.5}{(1+0.001(x^2+y^2))^2} $$
+  </div>
+  <p>函数呈现出复杂波纹状曲面，局部极值密集</p>
+  <div class="footer">7</div>
+</section>
+
+<!-- Schaffer + GA -->
+<section class="slide">
+  <h2>遗传算法求解 Schaffer 函数</h2>
+  <ul>
+    <li><b>步骤1：</b>构建适应度函数（转为最小化）</li>
+    <li><b>步骤2：</b>GA 在二维空间中全局搜索</li>
+    <li><b>步骤3：</b>定位全局最大值</li>
+  </ul>
+  <pre><code>schaffer = @(x) -(0.5-(sin(sqrt(x(1)^2+x(2)^2))^2-0.5)
+ /(1+0.001*(x(1)^2+x(2)^2))^2);
+[x,fval] = ga(schaffer,2,[],[],[],[],[-5,-5],[5,5]);</code></pre>
+  <img src="ga_2D_result.png"
+     style=margin-top: 20px;
+  width: 650px;
+  max-height: 280px;
+  object-fit: contain;
+  border-radius: 10px; alt="Schaffer结果">
+  <div class="footer">8</div>
+</section>
+
+<!-- 总结 -->
+<section class="slide">
+  <h2>总结</h2>
+  <ul>
+    <li>遗传算法具有优秀的全局搜索能力</li>
+    <li>对多峰复杂函数表现稳定</li>
+    <li>Schaffer 函数验证了算法有效性</li>
+  </ul>
+  <div class="footer">9</div>
+</section>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let index = 0;
+  document.addEventListener('keydown', e => {
+    if ((e.key === 'ArrowRight' || e.key === ' ') && index < slides.length - 1) {
+      slides[index].classList.remove('active');
+      slides[index].classList.add('prev');
+      index++;
+      slides[index].classList.add('active');
+    }
+    if (e.key === 'ArrowLeft' && index > 0) {
+      slides[index].classList.remove('active');
+      index--;
+      slides[index].classList.remove('prev');
+      slides[index].classList.add('active');
+    }
+  });
+</script>
+
+</body>
+</html>
